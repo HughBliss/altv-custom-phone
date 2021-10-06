@@ -1,10 +1,37 @@
 <template>
-  <div class="phone-view">
-    <div class="main-view">
-      <router-view />
+  <div class="content">
+    <div class="phone-view" v-if="isPhoneOpen">
+      <div class="main-view">
+        <template v-if="currentRoute === 'main'">
+          <home></home>
+        </template>
+        <template v-else-if="currentRoute === 'chat'">
+          <chat></chat>
+        </template>
+      </div>
     </div>
   </div>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+import chat from './views/chat.vue'
+import Home from './views/Home.vue'
+
+export default {
+  components: { chat, Home },
+  // data: () => ({}),
+  computed: {
+    ...mapState('chatModule', {
+      isPhoneOpen: 'isOpen'
+    }),
+    ...mapState('router', ['currentRoute'])
+    // isPhoneOpen () {
+    //   return this.$store.state
+    // }
+  }
+}
+</script>
 
 <style lang="scss">
 * {
@@ -19,24 +46,29 @@ a {
   color: #000;
   text-decoration: none;
 }
-body {
-  display: flex;
-  justify-content: center;
-  background: linear-gradient(
-    90deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(121, 9, 100, 1) 35%,
-    rgba(0, 212, 255, 1) 100%
-  );
-}
+// body {
+//   display: flex;
+//   justify-content: center;
+//   background: linear-gradient(
+//     90deg,
+//     rgba(2, 0, 36, 1) 0%,
+//     rgba(121, 9, 100, 1) 35%,
+//     rgba(0, 212, 255, 1) 100%
+//   );
+// }
 .main-view {
   background: #fff;
   border-radius: 40px;
-  width: 320px;
-  height: 720px;
   overflow: auto;
+  height: 100%;
+  width: 100%;
 }
 .phone-view {
+  height: 800px;
+  width: 360px;
+  position: absolute;
+  top: 0;
+  left: 0;
   margin: 20px auto;
   background: #000;
   padding: 20px;
